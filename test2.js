@@ -1,0 +1,193 @@
+"use strict";
+// trying out some simple Array methods....
+
+//**1 */
+
+//prg 1
+let arr = [1, 2];
+let arrayLike = {
+    0: "something",
+    1: "else",
+    // "2": "itself",
+    [Symbol.isConcatSpreadable]: true,
+    "2": "itself",
+    length: 3
+};
+console.log(arr.concat(arrayLike) ); // 1,2,something,else
+
+//prg 2
+let arr2 = [ 1, 5, 2, 15 ];
+arr2.sort(function(a, b) { return a - b; });
+console.log(arr2);  // 1, 2, 15
+let arr3 = [1, 2, 3, 4, 5];
+let result = arr3.reduce((sum, current) => sum + current);
+console.log(result); // 15
+
+
+//**2 */
+/*-----THESE METHODS TAKE IN FUNCTIONS AS PARAMETER-----*/
+//forEach
+//find
+//filter
+//map  -> Transforms and returns an array
+//reduce -> uses a function that take 'acc' and 'cur' as paemeters
+
+/* Prog 3 */
+let army = {
+    minAge: 18,
+    maxAge: 27,
+    canJoin(user) {
+        return user.age >= this.minAge && user.age < this.maxAge;
+    }
+};
+
+let users = [
+    {age: 16},
+    {age: 20},
+    {age: 23},
+    {age: 30}
+];
+
+// find users, for who army.canJoin returns true
+let soldiers = users.filter(army.canJoin, army);
+
+console.log(soldiers.length); // 2
+console.log(soldiers[0].age); // 20
+console.log(soldiers[1].age); // 23
+
+/* Prog 4 */
+
+function  camelize (str) {
+    if (str[0] === "-") {
+        str = str.substr(1, str.length - 1);
+
+    }
+    if (str[str.length - 1] === "-") {
+        str = str.substr(0, str.length - 1);
+    }
+    
+    let ref = str.split("-");
+    let refer2 = [];
+    let refer = ref.map(item => {
+        refer2.push(item[0].toUpperCase() + item.substr(1, str.length - 1));
+
+    });
+    
+    let finalString = refer2.join("");
+    console.log(finalString[0].toLowerCase()+finalString.substr(1, str.length - 1));
+}
+
+camelize("background-color");
+camelize("list-style-image");
+camelize("yo-style-image-");
+camelize("-webkit-transition");
+
+
+
+
+/* Prog 5 */
+function filterRange(ar4, min, max) {
+    // let newar4 = [];
+    /*
+    //Method 1
+    for (let i of ar4) {
+        if (i >= min && i <= max) {
+            newar4.push(i);
+        }
+    }
+    return newar4;
+    */
+
+    //Method 2
+    return ar4.filter(item => item >= min && item <= max);
+}
+
+
+
+let arr4 = [5, 3, 8, 1];
+let filtered = filterRange(arr4, 1, 4);
+console.log( filtered ); // 3,1 (matching values)
+console.log( arr4 ); // 5,3,8,1 (not modified)
+
+
+/*Prg 6*/
+let arr6 = [5, 2, 1, -10, 8];
+// ... your code to sort it in decreasing order
+arr6.sort().reverse();
+console.log( arr6 ); // 8, 5, 2, 1, -10
+
+/* Prg 7*/
+let arr7 = ["HTML", "JavaScript", "CSS"];
+
+function copySorted(ar7) {
+    return ar7.slice().sort();
+}
+let sorted = copySorted(arr7);
+
+console.log( sorted ); // CSS, HTML, JavaScript
+console.log( arr7 );
+
+
+/* Prg 8 */
+function shuffle(array) {
+    array.sort(() => Math.random() - 0.5);
+}
+  
+let arr8 = [1, 2, 3];
+shuffle(arr8);
+console.log(arr8);
+
+/* Prg 9*/
+function getAverageAge(users) {
+    return users.reduce((prev, currentUser) => prev + currentUser.age, 0) / users.length;
+}
+  
+
+let john = { name: "John", age: 25 };
+let pete = { name: "Pete", age: 30 };
+let mary = { name: "Mary", age: 29 };
+  
+let arr9 = [ john, pete, mary ];
+  
+console.log( getAverageAge(arr9) ); // 28
+
+
+/*final smaple prg in this chap*/
+function shuffle2(array) {
+    array.sort(() => Math.random() - 0.5);
+}
+  
+let arr10 = [1, 2, 3];
+shuffle2(arr10);
+console.log(arr10);
+
+
+
+//Iterables
+let range = {
+    from: 1,
+    to: 5,
+  
+    [Symbol.iterator]() {
+        this.current = this.from;
+        return this;
+    },
+  
+    next() {
+        if (this.current <= this.to) {
+            return { done: false, value: this.current++ };
+        } else {
+            return { done: true };
+        }
+    }
+};
+  
+for (let num of range) {
+    console.log(num); // 1, then 2, 3, 4, 5
+}
+
+
+for (let char of "test") {
+    // triggers 4 times: once for each character
+    console.log( char ); // t, then e, then s, then t
+}
